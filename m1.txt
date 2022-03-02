@@ -1,0 +1,589 @@
+1) python program to print a scatter plot
+
+import pandas as pd  		//pandas is a Python library used for working with data sets.and analyzing, cleaning, exploring, and manipulating data
+df=pd.read_csv('D:\Iris.csv')
+print (df.head(5));
+df.plot(kind="scatter", x='SepalLengthCm',y='PetalLengthCm',color='red')
+plt.show()
+
+
+
+
+change into some value in dataset set as null value
+
+2) python progaram to find all null valuein given data set and remove them
+
+import pandas as pd
+import numpy as np   //analyzing, cleaning, exploring, and manipulating data
+df=pd.read_csv('D:\Iris.csv')
+print (df.head(5));
+
+Id  SepalLengthCm  SepalWidthCm  PetalLengthCm  PetalWidthCm      Species
+0   1            NaN           NaN            1.4           NaN  Iris-setosa
+1   2            4.9           3.0            1.4           NaN  Iris-setosa
+2   3            NaN           NaN            1.3           NaN  Iris-setosa
+3   4            4.6           3.1            1.5           0.2  Iris-setosa
+4   5            5.0           3.6            1.4           NaN  Iris-setosa
+
+df.isnull() 	//Replace all values in the DataFrame with True for NULL values, otherwise False:
+
+d	SepalLengthCm	SepalWidthCm	PetalLengthCm	PetalWidthCm	Species
+0	False	True	True	False	True	False
+1	False	False	False	False	True	False
+2	False	True	True	False	True	False
+3	False	False	False	False	False	False
+4	False	False	False	False	True	False
+...	...	...	...	...	...	...
+145	False	False	False	False	False	False
+146	False	False	False	False	False	False
+147	False	False	False	False	False	False
+148	False	False	False	False	False	False
+149	False	False	False	False	False	False
+
+df.dropna()		// function is used to remove rows and columns with Null/NaN values. By default, this function returns a new DataFrame and the source DataFrame remains unchanged.
+
+Id	SepalLengthCm	SepalWidthCm	PetalLengthCm	PetalWidthCm	Species
+3	4	4.6	3.1	1.5	0.2	Iris-setosa
+5	6	5.4	3.9	1.7	0.4	Iris-setosa
+6	7	4.6	3.4	1.4	0.3	Iris-setosa
+7	8	5.0	3.4	1.5	0.2	Iris-setosa
+8	9	4.4	2.9	1.4	0.2	Iris-setosa
+...	...	...	...	...	...	...
+145	146	6.7	3.0	5.2	2.3	Iris-virginica
+146	147	6.3	2.5	5.0	1.9	Iris-virginica
+147	148	6.5	3.0	5.2	2.0	Iris-virginica
+148	149	6.2	3.4	5.4	2.3	Iris-virginica
+149	150	5.9	3.0	5.1	1.8	Iris-virginica
+
+
+
+df.isnull().sum()
+Id               0
+SepalLengthCm    2
+SepalWidthCm     2
+PetalLengthCm    0
+PetalWidthCm     4
+Species          0
+dtype: int64
+
+df.fillna("*") //fillna() function is used to fill NA/NaN values using the specified method/or specific symbol.
+Id	SepalLengthCm	SepalWidthCm	PetalLengthCm	PetalWidthCm	Species
+0	1	*	*	1.4	*	Iris-setosa
+1	2	4.9	3.0	1.4	*	Iris-setosa
+2	3	*	*	1.3	*	Iris-setosa
+3	4	4.6	3.1	1.5	0.2	Iris-setosa
+4	5	5.0	3.6	1.4	*	Iris-setosa
+...	...	...	...	...	...	...
+145	146	6.7	3.0	5.2	2.3	Iris-virginica
+146	147	6.3	2.5	5.0	1.9	Iris-virginica
+147	148	6.5	3.0	5.2	2.0	Iris-virginica
+148	149	6.2	3.4	5.4	2.3	Iris-virginica
+149	150	5.9	3.0	5.1	1.8	Iris-virginica
+
+3) write a program to convert categorial value in numeric format for given dataset
+
+import pandas as pd
+
+df = pd.DataFrame({'team': ['A', 'A', 'A', 'B', 'B', 'B', 'C', 'C', 'C'],
+                   'position': ['G', 'G', 'F', 'G', 'F', 'C', 'G', 'F', 'C'],
+                   'points': [5, 7, 7, 9, 12, 9, 9, 4, 13],
+                   'rebounds': [11, 8, 10, 6, 6, 5, 9, 12, 10]})
+df
+
+team	position	points	rebounds
+0	A	G	5	11
+1	A	G	7	8
+2	A	F	7	10
+3	B	G	9	6
+4	B	F	12	6
+5	B	C	9	5
+6	C	G	9	9
+7	C	F	4	12
+8	C	C	13	10
+
+#convert 'team' column to numeric
+df['team'] = pd.factorize(df['team'])[0]	// method helps to get the numeric representation of an array by identifying distinct values
+
+#view updated DataFrame
+df
+team	position	points	rebounds
+0	0	G	5	11
+1	0	G	7	8
+2	0	F	7	10
+3	1	G	9	6
+4	1	F	12	6
+5	1	C	9	5
+6	2	G	9	9
+7	2	F	4	12
+8	2	C	13	10
+
+
+
+4) write a python program to implement simple linear regression for predicting house price
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+df=pd.read_csv("D:\data.csv")
+df.head(5)
+date	price	bedrooms	bathrooms	sqft_living	sqft_lot	floors	waterfront	view	condition	sqft_above	sqft_basement	yr_built	yr_renovated	street	city	statezip	country
+0	2014-05-02 00:00:00	313000.0	3.0	1.50	1340	7912	1.5	0	0	3	1340	0	1955	2005	18810 Densmore Ave N	Shoreline	WA 98133	USA
+1	2014-05-02 00:00:00	2384000.0	5.0	2.50	3650	9050	2.0	0	4	5	3370	280	1921	0	709 W Blaine St	Seattle	WA 98119	USA
+2	2014-05-02 00:00:00	342000.0	3.0	2.00	1930	11947	1.0	0	0	4	1930	0	1966	0	26206-26214 143rd Ave SE	Kent	WA 98042	USA
+3	2014-05-02 00:00:00	420000.0	3.0	2.25	2000	8030	1.0	0	0	4	1000	1000	1963	0	857 170th Pl NE	Bellevue	WA 98008	USA
+4	2014-05-02 00:00:00	550000.0	4.0	2.50	1940	10500	1.0	0	0	4
+
+
+print(df.shape)
+df.head(5)
+import matplotlib.pyplot as plt
+
+df.plot(x='price',y='sqft_lot',style='o')
+plt.title('price vs sqft_lot')
+plt.xlabel('price')
+plt.ylabel('sqft_lot')
+Text(0, 0.5, 'sqft_lot')
+from sklearn.model_selection import train_test_split
+x=df['price'].values.reshape(-1,1)
+y=df['sqft_lot'].values.reshape(-1,1)
+print(x.shape)
+print(y.shape)
+
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.2,train_size=0.8,random_state=0)
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+sc=StandardScaler()
+sc.fit(x_train)
+sc.fit(y_train)
+x_train=sc.transform(x_train)
+x_test=sc.transform(x_test)
+y_train=sc.transform(y_train)
+y_test=sc.transform(y_test)
+LR=LinearRegression()
+LR.fit(x_train,y_train)
+
+print("Intercept",LR.intercept_)
+print("Coefficient",LR.coef_)
+
+y_pred=LR.predict(x_test)
+plt.scatter(x_train,y_train)
+plt.plot(x_test,y_pred,color='red')
+plt.title('simple Linear Regression')
+plt.xlabel('price')
+plt.ylabel('sqft_lot')
+plt.show()
+
+df=pd.DataFrame({'Actual':y_test.flatten(),'Predicted':y_pred.flatten()})
+print(df)
+
+ Actual  Predicted
+0   -0.277008  -0.020111
+1   -0.166285  -0.009273
+2    0.023820  -0.032419
+3    0.666351   0.003812
+4   -0.123971   0.057505
+..        ...        ...
+915  0.008502  -0.022034
+916 -0.384092  -0.017419
+917  1.802270  -0.035935
+918 -0.367646  -0.002342
+919 -0.206484  -0.025804
+
+[920 rows x 2 columns]
+
+5) write a python program to implement Mulitiple linear regression 
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+df=pd.read_csv("D:\data.csv")
+df.head(5)
+date	price	bedrooms	bathrooms	sqft_living	sqft_lot	floors	waterfront	view	condition	sqft_above	sqft_basement	yr_built	yr_renovated	street	city	statezip	country
+0	2014-05-02 00:00:00	313000.0	3.0	1.50	1340	7912	1.5	0	0	3	1340	0	1955	2005	18810 Densmore Ave N	Shoreline	WA 98133	USA
+1	2014-05-02 00:00:00	2384000.0	5.0	2.50	3650	9050	2.0	0	4	5	3370	280	1921	0	709 W Blaine St	Seattle	WA 98119	USA
+2	2014-05-02 00:00:00	342000.0	3.0	2.00	1930	11947	1.0	0	0	4	1930	0	1966	0	26206-26214 143rd Ave SE	Kent	WA 98042	USA
+3	2014-05-02 00:00:00	420000.0	3.0	2.25	2000	8030	1.0	0	0	
+
+from sklearn.linear_model import LinearRegression
+from sklearn import linear_model
+X = df[['view', 'condition']]
+y = df['price']
+
+regr = linear_model.LinearRegression()
+regr.fit(X, y)
+
+LinearRegression()
+4,5
+predictedPrice= regr.predict([[4,5]])
+​
+print(predictedPrice)
+[1197192.42281174]
+​
+
+6) python program to implement polynomial regressison for given dataset
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+x=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+y=[100,90,80,70,60,50,44,40,30,20,10,12,89,77,89,88,88,79]
+mymodel=np.poly1d(np.polyfit(x,y,3))	// method helps to get the numeric representation of an array by identifying distinct values
+myline=np.linspace(1,22,100)
+plt.scatter(x,y)
+plt.plot(myline,mymodel(myline))
+plt.show()
+
+
+7). Write a python program to implement Naive Bayes.
+
+# Importing library
+import math
+import random
+import csv
+# the categorical class names are changed to numberic data
+# eg: yes and no encoded to 1 and 0
+def encode_class(mydata):
+classes = []
+for i in range(len(mydata)):
+if mydata[i][-1] not in classes:
+classes.append(mydata[i][-1])
+for i in range(len(classes)):
+for j in range(len(mydata)):
+if mydata[j][-1] == classes[i]:
+mydata[j][-1] = i
+return mydata
+# Splitting the data
+def splitting(mydata, ratio):
+train_num = int(len(mydata) * ratio)
+train = []
+# initially testset will have all the dataset
+test = list(mydata)
+while len(train) < train_num:
+# index generated randomly from range 0
+# to length of testset
+index = random.randrange(len(test))
+# from testset, pop data rows and put it in train
+train.append(test.pop(index))
+return train, test
+# Group the data rows under each class yes or
+# no in dictionary eg: dict[yes] and dict[no]
+def groupUnderClass(mydata):
+dict = {}
+for i in range(len(mydata)):
+if (mydata[i][-1] not in dict):
+dict[mydata[i][-1]] = []
+dict[mydata[i][-1]].append(mydata[i])
+return dict
+# Calculating Mean
+def mean(numbers):
+return sum(numbers) / float(len(numbers))
+# Calculating Standard Deviation
+def std_dev(numbers):
+avg = mean(numbers)
+variance = sum([pow(x - avg, 2) for x in numbers]) / float(len(numbers) - 1)
+return math.sqrt(variance)
+def MeanAndStdDev(mydata):
+info = [(mean(attribute), std_dev(attribute)) for attribute in zip(*mydata)]
+# eg: list = [ [a, b, c], [m, n, o], [x, y, z]]
+# here mean of 1st attribute =(a + m+x), mean of 2nd attribute = (b + n+y)/3
+# delete summaries of last class
+del info[-1]
+return info
+# find Mean and Standard Deviation under each class
+def MeanAndStdDevForClass(mydata):info = {}
+dict = groupUnderClass(mydata)
+for classValue, instances in dict.items():
+info[classValue] = MeanAndStdDev(instances)
+return info
+# Calculate Gaussian Probability Density Function
+def calculateGaussianProbability(x, mean, stdev):
+expo = math.exp(-(math.pow(x - mean, 2) / (2 * math.pow(stdev, 2))))
+return (1 / (math.sqrt(2 * math.pi) * stdev)) * expo
+# Calculate Class Probabilities
+def calculateClassProbabilities(info, test):probabilities = {}
+for classValue, classSummaries in info.items():
+probabilities[classValue] = 1
+for i in range(len(classSummaries)):
+mean, std_dev = classSummaries[i]
+x = test[i]
+probabilities[classValue] *= calculateGaussianProbability(x, mean, std_dev)
+return probabilities
+# Make prediction - highest probability is the prediction
+def predict(info, test):
+probabilities = calculateClassProbabilities(info, test)
+bestLabel, bestProb = None, -1
+for classValue, probability in probabilities.items():
+if bestLabel is None or probability > bestProb:
+bestProb = probability
+bestLabel = classValue
+return bestLabel
+# returns predictions for a set of examples
+def getPredictions(info, test):
+predictions = []
+for i in range(len(test)):
+result = predict(info, test[i])
+predictions.append(result)
+return predictions
+# Accuracy score
+def accuracy_rate(test, predictions):
+correct = 0
+for i in range(len(test)):
+if test[i][-1] == predictions[i]:
+correct += 1
+return (correct / float(len(test))) * 100.0
+# driver code
+# add the data path in your system
+filename = r'E:\user\MACHINE LEARNING\machine learning algos\Naive bayes\filedata.csv'
+# load the file and store it in mydata list
+mydata = csv.reader(open(filename, "rt"))
+mydata = list(mydata)
+mydata = encode_class(mydata)
+for i in range(len(mydata)):
+mydata[i] = [float(x) for x in mydata[i]]
+# split ratio = 0.7
+# 70% of data is training data and 30% is test data used for testing
+ratio = 0.7
+train_data, test_data = splitting(mydata, ratio)
+print('Total number of examples are: ', len(mydata))
+print('Out of these, training examples are: ', len(train_data))
+print("Test examples are: ", len(test_data))
+# prepare model
+info = MeanAndStdDevForClass(train_data)
+# test model
+predictions = getPredictions(info, test_data)
+accuracy = accuracy_rate(test_data, predictions)
+print("Accuracy of your model is: ", accuracy)
+
+Output:
+Output: Total number of examples are: 200
+Out of these, training examples are: 140
+Test examples are: 60
+Accuracy of your model is: 71.2376788
+
+
+
+8. Write a python program to Implement Decision Tree whether or not to play tennis.
+from sklearn.cross_validation import train_test_split 
+ from sklearn.tree import DecisionTreeClassifier 
+ from sklearn.metrics import accuracy_score 
+ from sklearn import tree 
+ from sklearn.preprocessing import LabelEncoder
+ import pandas as pd 
+ import numpy as np 
+ df = pd.read_csv('playTennis.csv') 
+ lb = LabelEncoder() 
+ df['outlook_'] = lb.fit_transform(df['outlook']) 
+ df['temp_'] = lb.fit_transform(df['temp'] ) 
+ df['humidity_'] = lb.fit_transform(df['humidity'] ) 
+ df['windy_'] = lb.fit_transform(df['windy'] ) 
+ df['play_'] = lb.fit_transform(df['play'] ) 
+ X = df.iloc[:,5:9] 
+ Y = df.iloc[:,9]
+ X_train, X_test , y_train,y_test = train_test_split(X, Y, test_size = 0.3, random_state = 100) 
+ clf_entropy = DecisionTreeClassifier(criterion='entropy')
+ clf_entropy.fit(X_train.astype(int),y_train.astype(int)) 
+ y_pred_en = clf_entropy.predict(X_test)
+print("Accuracy is :{0}".format(accuracy_score(y_test.astype(int),y_pred_en) * 100))
+
+
+
+9. Write a python program to implement linear SVM.
+
+# Import the Libraries
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import svm, datasets
+# Import some Data from the iris Data Set
+iris = datasets.load_iris()
+# Take only the first two features of Data.
+# To avoid the slicing, Two-Dim Dataset can be used
+X = iris.data[:, :2]
+y = iris.target
+# C is the SVM regularization parameter
+C = 1.0
+# Create an Instance of SVM and Fit out the data.
+# Data is not scaled so as to be able to plot the support vectors
+svc = svm.SVC(kernel ='linear', C = 1).fit(X, y)
+# create a mesh to plot
+x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+h = (x_max / x_min)/100
+xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
+np.arange(y_min, y_max, h))
+# Plot the data for Proper Visual Representation
+plt.subplot(1, 1, 1)
+# Predict the result by giving Data to the model
+Z = svc.predict(np.c_[xx.ravel(), yy.ravel()])
+Z = Z.reshape(xx.shape)
+plt.contourf(xx, yy, Z, cmap = plt.cm.Paired, alpha = 0.8)
+plt.scatter(X[:, 0], X[:, 1], c = y, cmap = plt.cm.Paired)
+plt.xlabel('Sepal length')
+plt.ylabel('Sepal width')
+plt.xlim(xx.min(), xx.max())
+plt.title('SVC with linear kernel')
+# Output the Plot
+plt.show()
+Output:
+ 
+ 
+10. Write a pythan program to find Decision boundary by using a neural netwark with 10 
+hidden units on two moans dataset.
+
+ model = Sequential()
+ model.add(Conv2D(32, kernel_size=(5, 5), strides=(1, 1)
+ activation='relu',
+ input_shape=input_shape))
+ model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+ model.add(Conv2D(64, (5, 5), activation='relu'))
+ model.add(MaxPooling2D(pool_size=(2, 2)))
+ model.add(Flatten())
+ model.add(Dense(1000, activation='relu'))
+ model.add(Dense(num_classes, activation='softmax'))
+
+
+
+11. Write a python program to transform data with Principal Component Analysis (PCA).
+Step 1: Importing the libraries
+ # importing required libraries
+ import numpy as np
+ import matplotlib.pyplot as plt
+ import pandas as pd
+Step 2: Importing the data set
+ Import the dataset and distributing the dataset into X and y components for data 
+analysis.
+ # importing or loading the dataset
+ dataset = pd.read_csv('wines.c
+ # distributing the dataset into two components X and Y
+ X = dataset.iloc[:, 0:13].values
+ y = dataset.iloc[:, 13].values
+Step 3: Splitting the dataset into the Training set and Test set
+ # Splitting the X and Y into the
+ # Training set and Testing set
+ from sklearn.model_selection import train_test_split
+ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
+Step 4: Feature Scaling
+ Doing the pre-processing part on training and testing set such as fitting the Standard scale.
+ # performing preprocessing part
+ from sklearn.preprocessing import StandardScaler
+ sc = StandardScaler()
+ X_train = sc.fit_transform(X_train)
+ X_test = sc.transform(X_test)
+Step 5: Applying PCA function
+ Applying the PCA function into the training and testing set for analysis.
+ # Applying PCA function on training
+ # and testing set of X component
+ from sklearn.decomposition import PCA
+ pca = PCA(n_components = 2)
+ X_train = pca.fit_transform(X_train)
+ X_test = pca.transform(X_test)
+ explained_variance = pca.explained_variance_ratio_
+Step 6: Fitting Logistic Regression To the training set
+ # Fitting Logistic Regression To the training set
+ from sklearn.linear_model import LogisticRegression
+ classifier = LogisticRegression(random_state = 0)
+ classifier.fit(X_train, y_train)
+Step 7: Predicting the test set result 
+ # Predicting the test set result using
+ # predict function under LogisticRegression
+ y_pred = classifier.predict(X_test)
+Step 8: Making the confusion matrix 
+ from sklearn.metrics import confusion_matrix
+ cm = confusion_matrix(y_test, y_pred)
+Step 9: Predicting the training set result
+# Predicting the training set
+# result through scatter plot
+from matplotlib.colors import ListedColormap
+X_set, y_set = X_train, y_train
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 1,
+stop = X_set[:, 0].max() + 1, step = 0.01),
+art = X_set[:, 1].min() - 1,
+stop = X_set[:, 1].max() + 1, step = 0.01))
+plt.contourf(X1, X2, classifier.predict(np.array([X1.ravel(),
+X2.ravel()]).T).reshape(X1.shape), alpha = 0.75,
+cmap = ListedColormap(('yellow', 'white', 'aquamarine')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
+c = ListedColormap(('red', 'green', 'blue'))(i), label = j)
+plt.title('Logistic Regression (Training set)')
+plt.xlabel('PC1') # for Xlabel
+plt.ylabel('PC2') # for Ylabel
+plt.legend() # to show legend
+ # show scatter plot
+ plt.show()
+Output:
+
+
+12. Write a python program to implement k-nearest Neighbors Mt. algorithm to build 
+prediction model (Use Forge Dataset).
+
+ # Example of making predictions
+ from math import sqrt # calculate the Euclidean distance between two vectors
+ def euclidean_distance(row1, row2):
+ distance = 0.0
+ for i in range(len(row1)-1):
+ distance += (row1[i] - row2[i])**2
+ return sqrt(distance)
+ # Locate the most similar neighbors
+ def get_neighbors(train, test_row, num_neighbors):
+ distances = list()
+ for train_row in train:
+ dist = euclidean_distance(test_row, train_row)
+ distances.append((train_row, dist))
+ distances.sort(key=lambda tup: tup[1])
+ neighbors = list()
+ for i in range(num_neighbors):
+ neighbors.append(distances[i][0])
+ return neighbors
+# Make a classification prediction with neighbors
+def predict_classification(train, test_row, num_neighbors):
+neighbors = get_neighbors(train, test_row, num_neighbors)
+output_values = [row[-1] for row in neighbors]
+prediction = max(set(output_values), key=output_values.count)
+return prediction
+# Test distance function
+dataset = [[2.7810836,2.550537003,0],
+[1.465489372,2.362125076,0],
+[3.396561688,4.400293529,0],
+[1.38807019,1.850220317,0],
+[3.06407232,3.005305973,0],
+[7.627531214,2.759262235,1],
+[5.332441248,2.088626775,1],
+[6.922596716,1.77106367,1],
+[8.675418651,-0.242068655,1],
+[7.673756466,3.508563011,1]]
+prediction = predict_classification(dataset, dataset[0], 3)
+print('Expected %d, Got %d.' % (dataset[0][-1], prediction))
+
+
+
+
+13. Write a python program to implement k-means algorithm on a synthetic dataset.
+
+ wcss=[]
+for i in range(1,7):
+kmeans = KMeans(i)
+ kmeans.fit(x)
+ wcss_iter = kmeans.inertia_
+ wcss.append(wcss_iter)
+ number_clusters = range(1,7)
+plt.plot(number_clusters,wcss)
+plt.title('The Elbow title')
+ plt.xlabel('Number of clusters')
+ plt.ylabel('WCSS')
+
+
+
+
+Output:
+14. Write a python program to implement Agglomerative clustering on a synthetic dataset.
+
+ import pandas as pd
+ import numpy as np
+ from matplotlib import pyplot as plt
+ from sklearn.cluster import AgglomerativeClustering
+ import scipy.cluster.hierarchy as sch
+Output
+
