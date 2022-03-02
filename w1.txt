@@ -1,0 +1,459 @@
+1)Name should not contain digit
+Phone number 
+Age
+
+->
+next.html
+
+<html>
+<head><title>next page</title></head>
+<body>
+<h1>Done</h1>
+</body>
+</html>
+
+
+StudentRegistration.html
+<html>
+<head>
+<script type="text/javascript" src="validate.js"></script>
+</head>
+<body>
+<form action="next.html" name="StudentRegistration" onsubmit="return(validate());">
+<table cellpadding="2" align="center"
+cellspacing="2">
+<tr>
+    <td colspan=2>
+    <center><font size=4><b>Student Registration Form</b></font></center>
+    </td>
+</tr>
+
+<tr>
+    <td>Enter Your Name</td>
+    <td><input type="text" name="textfnames" id="textfname" size="30" ></td>
+</tr>
+
+<tr>
+    <td>phoneno</td>
+    <td><input type="text" name="pnumber" id="pnumber" size="30"></td>
+</tr>
+
+<tr>
+    <td>Age</td>
+    <td>
+        <input type="text" name="age" id="age" size="5">
+    </td>
+
+</tr>
+        
+<tr>
+<td><input type="reset"></td>
+<td colspan="2"><input type="submit" value="Submit Form" /></td>
+</tr>
+</table>
+</form>
+</body>
+</html>
+
+validate.js
+
+function validate()
+{
+    if (document.StudentRegistration.textfnames.value == "")
+    {
+        alert("Please enter your name");
+        document.StudentRegistration.textfnames.focus();
+        return false;
+    }
+    else if (document.StudentRegistration.textfnames.value.match(/[0-9]/))
+    {
+        alert("Please enter Valid name as it can only contain alphabets");
+        document.StudentRegistration.textfnames.focus();
+        return false;
+    }
+
+    var age1=document.StudentRegistration.age.value;
+
+    if(age1=="")
+    {
+        alert("please enter age");
+    }
+    else if(age1<18 || age1>50)
+    {
+        alert("invalid age");
+        return false;
+    }
+    
+    var phone=document.StudentRegistration.pnumber.value;
+    var pregex=/^\d{10}$/;
+    if(phone.match(pregex))
+    {
+        return true;
+    }
+    else
+    {
+        alert("Invalid mobile Number");
+        return false;
+    }
+
+      
+    
+}
+
+
+===========================================================================
+
+2) Array
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>The concat() method concatenates (joins) two or more arrays:</p>
+
+<p id="demo"></p>
+    <script>
+
+        // program to extract value as an array from an array of objects
+
+function extractValue(arr, prop) {
+
+// extract value from property
+let extractedValue = arr.map(item => item[prop]);
+
+return extractedValue;
+
+}
+
+const objArray = [{a: 1, b: 2}, {a: 4, b: 5}, {a: 8, b: 9}];
+
+// passing an array of objects and property 'a' to extract
+const result = extractValue(objArray, 'a');
+console.log(result);
+
+const arr1 = ["Cecilie", "Lone"];
+const arr2 = ["Emil", "Tobias", "Linus"];
+
+const children = arr1.concat(arr2); 
+document.getElementById("demo").innerHTML = children;
+
+console.log("---------------------------------------------");
+const array = [10, 11, 3, 20, 5];
+
+const output = array.filter(element => element>10);
+
+console.log(output) //[11, 20]
+
+    </script>
+</body>
+</html>
+
+// output is on console of inspect elements..
+
+
+===============================================================================================
+
+3) validate email and dob
+
+Mail.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <title>ASS-3</title>
+ 
+</head>
+<body>
+ <center>
+ <form name="Emailform" >
+ <fieldset><b>
+ <label for="Email">Enter Email :</label>
+ <input type="email" id="Email" ><br><br>
+ <label for="password"> Enter Password :</label> 
+ <input type="password" name="passwd" id="password" ><br>
+
+ 
+ <label for="dob"> Enter DOB (MM/DD/YYYY): </label>
+ <input type="text" id="dob"><br><br>
+
+
+
+
+
+ <center> <button id="btn" type="button" 
+onclick="validate()">submit</button></center>
+ </b>
+ </fieldset>
+ </form>
+</center>
+ <script src="./Mail.js"></script>
+</body>
+</html>
+
+Mail.js
+
+function validate()
+{
+ let email=document.forms["Emailform"]["Email"];
+ let passwd=document.forms["Emailform"]["password"];
+ let Regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+ let dob=document.forms["Emailform"]["dob"];
+ let date = /^(0?[1-9]|1[0-2])[\/](0?[1-9]|[1-2][0-9]|3[01])[\/]\d{4}$/; 
+ 
+
+ 
+ if (email.value.match(Regex)) 
+ {
+ alert("Valid email address!");
+ email.focus();
+ 
+ } else 
+ {
+ 
+ alert("Invalid email address!");
+ email.focus();
+ return false;
+ 
+ }
+ if (date.test(dob.value)) {
+    alert("Valid Date");
+    date.focus();
+    }
+    else{
+    alert("Invalid date format");
+    date.focus();
+    return false;
+
+    }
+ 
+ if(passwd.value=="")
+ {
+ alert("Enter Password Please");
+ }
+ else
+ {
+ alert("login Successfully");
+ }
+
+ 
+ 
+}
+
+
+==============================================================================================
+
+
+4)NodeJs Webpage
+
+const fs = require('fs');
+fs.writeFile('log.txt','Hello Node js', function(err)
+{
+ if(err) throw err;
+ console.log('It\'s Saved!');
+});
+fs.appendFile('message.txt','Append Data into File', function(err)
+{
+ if(err) throw err;
+ console.log('Saved!');
+});
+console.log(new Date().toISOString());
+[...Array(1000)].forEach(function (item , index)
+{
+ fs.appendFile("append.txt", index+ "\n" , function(err)
+ {
+ if(err) console.log(err);
+ });
+});
+console.log(new Date().toISOString())
+
+===================================================================================================
+
+5)Emloyee validate salary and mobile no.
+WF_Slips5.html
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JavaScript Form Validation</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <h1>Employee regestraation </h1>
+    <form aciton ="/myaction.php" name="myForm" onsubmit="return validateForm()" method="post">
+        <div class="formdesign" id="name">
+           Employee Name: <input type="text" name="fname" required><b><span class="formerror"> </span></b>
+        </div>
+        <div class="formdesign" id="fid">
+            Employee ID: <input type="Number" name="feid" required><b><span class="formerror"></span></b>
+        </div>
+        <div class="formdesign" id="email">
+            Email: <input type="email" name="femail" required><b><span class="formerror"> </span></b>
+        </div>
+
+        <div class="formdesign" id="phone">
+            Contact NO: <input type="phone" name="fphone" required><b><span class="formerror"></span></b>
+        </div>
+
+        <div class="formdesign" id="address">
+            Address: <input type="text" name="faddr" required><b><span class="formerror"></span></b>
+        </div>
+        <div class="formdesign" id="dob">
+            Date Of Birth: <input type="date" name="fdate" required><b><span class="formerror"></span></b>
+        </div>
+        <div class="formdesign" id="salary">
+            Salary: <input type="text" name="fsalary" required><b><span class="formerror"></span></b>
+        </div>
+
+        <input class="but" type="submit" value="Submit">
+
+    </form>
+</body>
+<script src="index.js"></script>
+
+</html>
+
+
+
+
+index.js
+function clearErrors(){
+
+    errors = document.getElementsByClassName('formerror');
+    for(let item of errors)
+    {
+        item.innerHTML = "";
+    }
+
+
+}
+function seterror(id, error){
+    //sets error inside tag of id 
+    element = document.getElementById(id);
+    element.getElementsByClassName('formerror')[0].innerHTML = error;
+
+}
+
+function validateForm(){
+    var returnval = true;
+    clearErrors();
+
+    //perform validation and if validation fails, set the value of returnval to false
+    
+    var reg=/^[a-zA-z]+ [a-zA-Z]+$/;
+
+    var name = document.forms['myForm']["fname"].value;
+   if(!reg.test(name))
+   {
+    seterror("name", "*Name is not Valid!");
+    returnval = false;
+   }
+    var email = document.forms['myForm']["femail"].value;
+    if (email.length>15){
+        seterror("email", "*Email length is too long");
+        returnval = false;
+    }
+
+    var phone = document.forms['myForm']["fphone"].value;
+    if (phone.length != 10){
+        seterror("phone", "*Phone number should be of 10 digits!");
+        returnval = false;
+    }
+
+    var salary = document.forms['myForm']["fsalary"].value;
+    if(salary==0)
+    {
+        seterror("salary", "*Salary should not be 0");
+        returnval = false;
+    }
+
+    if(salary.length>=6)
+    {
+        seterror("salary", "*Invalid Salary");
+        returnval = false;
+    }
+
+    return returnval;
+}
+
+
+
+================================================================
+
+
+
+6)Gender
+Phone 
+Age
+
+
+next2.html
+<html>
+<head><title>next page</title></head>
+<body>
+<h1>Done</h1>
+</body>
+</html>
+
+StudentReg.html
+<html>
+<head>
+<script type="text/javascript" src="studentreg.js"></script>
+</head>
+<body>
+<form action="next2.html" name="StudentReg" onsubmit="return(validate());">
+<table cellpadding="2" align="center"
+cellspacing="2">
+<tr>
+    <td colspan=2>
+    <center><font size=4><b>Student Registration Form</b></font></center>
+    </td>
+</tr>
+
+<tr>
+    <td>Enter Your Name</td>
+    <td><input type="text" name="textfnames" id="textfname" size="30" ></td>
+</tr>
+
+<tr>
+    <td>phoneno</td>
+    <td><input type="text" name="pnumber" id="pnumber" size="30"></td>
+</tr>
+
+<tr>
+    <td>Age</td>
+    <td>
+        <input type="text" name="age" id="age" size="5">
+    </td>
+
+</tr>
+
+<tr>
+    <td>Gender</td>
+    <td><input type="radio" name="gender" value="male" size="10">Male
+    <input type="radio" name="gender" value="Female" size="10">Female</td>
+    </tr>
+
+
+        
+<tr>
+<td><input type="reset"></td>
+<td colspan="2"><input type="submit" value="Submit Form" /></td>
+</tr>
+</table>
+</form>
+</body>
+</html>
+
+
+

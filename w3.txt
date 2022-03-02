@@ -1,0 +1,550 @@
+Q1. Create an HTML form that contain the Student Registration details and write a JavaScript to validate 
+Student first and last name as it should not contain other than alphabets and age should be between 18 
+to 50.
+
+//student.js
+function formValidation()
+{
+var first=document.registration.first;
+var last=document.registration.last;
+var rollno=document.registration.rollno;
+var uadd =document.registration.address;
+var age=document.registration.age;
+if(allLetter(first))
+{
+if(allLetter(last))
+{
+if(alphanumeric(rollno))
+{ 
+if(allnumeric(age))
+{
+}}}}
+return false;
+}
+function allLetter(first)
+{ 
+var letters = /^[A-Za-z]+$/;
+if(first.value.match(letters))
+{
+alert('Student first name submitted');
+return true;
+}
+else
+{
+alert('Student first name must have alphabet characters only');
+first.focus();
+return false;
+}
+}
+function allLetter(last)
+{ 
+var letters = /^[A-Za-z]+$/;
+if(last.value.match(letters))
+{
+ alert("Student last name submitted");
+return true;
+}
+else
+{
+alert('Student last name must have alphabet characters only');
+last.focus();
+return false;
+}
+}
+function alphanumeric(rollno)
+{ 
+var letters = /^[0-9]+$/;
+if(rollno.value.match(letters))
+{
+ alert("Student Rollno submitted");
+return true;
+}
+else
+{
+alert('Student Rollno must have alphanumeric characters only');
+uadd.focus();
+return false;
+}
+}
+function allnumeric(age)
+{
+var number = /^[0-9]+$/;
+if(age.value.match(number))
+{
+ var input = age.value;
+ if(input>=18&&input<=25) {
+ return true;
+ }
+ else {
+ alert("Age must be between 18 and 25 | You have entered "+input);
+ return false;
+ }
+}
+else
+{
+ alert('Age must have numeric numbers only');
+ no.focus();
+ return false;
+}
+}
+//student.html
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>Student Registeration</title>
+<meta name="keywords" content="Student Registeration" />
+<meta name="description" content="this is student registration " />
+<link rel='stylesheet' href='student.css' type='text/css' />
+<script src="student.js">
+</script>
+</head>
+<body onload="document.registration.userid.focus();" bgcolor="orange">
+<h1>Studednt Registration Form</h1>
+<form name='registration' onSubmit="return formValidation();">
+<ul>
+<li><label for="first">First Name:</label></li>
+<li><input type="text" name="first" size="50" /></li>
+<li><label for="last">Last Name:</label></li>
+<li><input type="text" name="last" size="50" /></li>
+<li><label for="empid">RollNO:</label></li>
+<li><input type="text"name="rollno" size="50"/></li>
+<li><label for="no">Age:</label></li>
+<li><input type="number"name="age"></li>
+<li><input type="submit" name="submit" value="Submit" /></li>
+</ul>
+</form>
+</body>
+</html>
+//student.css
+h1 {
+ margin-left: 70px;
+ }
+ form li {
+ list-style: none;
+ margin-bottom: 5px;
+ }
+ 
+ form ul li label{
+ float: left;
+ clear: left;
+ width: 100px;
+ text-align: right;
+ margin-right: 10px;
+ font-family:Verdana, Arial, Helvetica, sans-serif;
+ font-size:14px;
+ }
+ 
+ form ul li input, select, span {
+ float: left;
+ margin-bottom: 10px;
+ }
+ 
+ form textarea {
+ float: left;
+ width: 350px;
+ height: 150px;
+ }
+ 
+ [type="submit"] {
+ clear: left;
+ margin: 20px 0 0 230px;
+ font-size:18px
+ }
+ 
+ p {
+ margin-left: 70px;
+ font-weight: bold;
+ }
+.........................................................................................................................................................................................................................
+
+
+Q3. Create an HTML form for Login and write a JavaScript to validate email ID using Regular Expression. 
+//email.js
+function ValidateEmail(inputText)
+{
+var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+if(inputText.value.match(mailformat))
+{
+alert("Valid email address!");
+document.form1.text1.focus();
+return true;
+}
+else
+{
+alert("You have entered an invalid email address!");
+document.form1.text1.focus();
+return false;
+}
+}
+//email.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JavaScript form validation - checking email</title>
+<link rel='stylesheet' href='email.css' type='text/css' /> 
+</head>
+<body onload='document.form1.text1.focus()'>
+<div class="mail">
+<h2>Input an email and Submit</h2>
+<form name="form1" action="#"> 
+<ul>
+<li><input type='text' name='text1'/></li>
+<li>&nbsp;</li>
+<li class="submit"><input type="submit" name="submit" value="Submit" 
+onclick="ValidateEmail(document.form1.text1)"/></li>
+<li>&nbsp;</li>
+</ul>
+</form>
+</div>
+<script src="email.js"></script>
+</body>
+</html>
+//email.css
+li {list-style-type: none;
+font-size: 16pt;
+}
+.mail {
+margin: auto;
+padding-top: 10px;
+padding-bottom: 10px;
+width: 400px;
+background : #D8F1F8;
+border: 1px soild silver;
+}
+.mail h2 {
+margin-left: 38px;
+}
+input {
+font-size: 20pt;
+}
+input:focus, textarea:focus{
+background-color: lightyellow;
+}
+input submit {
+font-size: 12pt;
+}
+.rq {
+color: #FF0000;
+font-size: 10pt;
+}
+....................................................................................................................................................................................................................
+
+Q5. Create an HTML form that contain the Employee Registration details and write a JavaScript to 
+validate DOB, Joining Date, and Salary.
+//emp.js
+function formValidation()
+{
+var first=document.registration.first;
+var last=document.registration.last;
+var empid=document.registration.empid;
+var birth=document.registration.birth;
+var uadd =document.registration.address;
+var ucountry =document.registration.country;
+var no=document.registration.no;
+var jdate=document.registration.jdate;
+var uemail = document.registration.email;
+var umgen = document.registration.umgen;
+var ufgen = document.registration.ufgen;
+var salary =document.registration.salary;
+if(allLetter(first))
+{
+if(allLetter(last))
+{
+if(alphanumeric(empid))
+{ 
+if(allb(birth))
+{
+if(alphanumeric(uadd))
+{ 
+if(countryselect(ucountry))
+{
+if(allnumeric(no))
+{
+if(allnumeric(jdate))
+{
+if(ValidateEmail(uemail))
+{
+if(validgendor(umgen,ufgen))
+{
+if(allnumeric(salary))
+{
+}}}}}}}}}}}
+return false;
+}
+function allLetter(first)
+{ 
+var letters = /^[A-Za-z]+$/;
+if(first.value.match(letters))
+{
+alert('employee name submitted');
+return true;
+}
+else
+{
+alert('employee name must have alphabet characters only');
+first.focus();
+return false;
+}
+}
+function allLetter(last)
+{ 
+var letters = /^[A-Za-z]+$/;
+if(last.value.match(letters))
+{
+ alert("employee name submitted");
+return true;
+}
+else
+{
+alert('employee name must have alphabet characters only');
+last.focus();
+return false;
+}
+}
+function alphanumeric(empid)
+{ 
+var letters = /^[0-9a-zA-Z]+$/;
+if(empid.value.match(letters))
+{
+ alert("employee id submitted");
+return true;
+}
+else
+{
+alert('employee id must have alphanumeric characters only');
+uadd.focus();
+return false;
+}
+}
+function allb(birth)
+{
+var birth_len = birth.value.length;
+if (birth_len == 0)
+{
+alert("birth date should not be empty");
+birth.focus();
+return false;
+}
+alert("birth of date submitted");
+return true;
+}
+function alphanumeric(uadd)
+{ 
+var letters = /^[0-9a-zA-Z]+$/;
+if(uadd.value.match(letters))
+{
+ alert("address submitted");
+return true;
+}
+else
+{
+alert('address must have alphanumeric characters only');
+uadd.focus();
+return false;
+}
+}
+function countryselect(ucountry)
+{
+if(ucountry.value == "Default")
+{
+alert('Select your country from the list');
+ucountry.focus();
+return false;
+}
+else
+{
+ alert("country submitted");
+return true;
+}
+}
+function allnumeric(no)
+{
+var number = /^[0-9]+$/;
+if(no.value.match(number))
+{
+ alert("Contact Number submitted");
+ return true;
+ }
+ else
+ {
+ alert('Contact no must have numeric numbers only');
+ no.focus();
+ return false;
+ }
+}
+function allnumeric(jdate)
+{
+var jdate_len = jdate.value.length;
+if (jdate_len == 0)
+{
+alert("date of joining should not be empty");
+birthday.focus();
+return false;
+}
+alert("date of joining submitted");
+return true;
+}
+function ValidateEmail(uemail)
+{
+var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+if(uemail.value.match(mailformat))
+{
+ alert("email address is submitted");
+return true;
+}
+else
+{
+alert("You have entered an invalid email address!");
+uemail.focus();
+return false;
+}
+}
+function validgender(umgen,ufgen)
+{
+x=0;
+if(umgen.checked) 
+{
+x++;
+} if(ufgen.checked)
+{
+x++; 
+}
+if(x==0)
+{
+alert('Select Male/Female');
+umgen.focus();
+return false;
+}
+else
+{
+window.location.reload()
+return true;
+}
+}
+function allnumeric(salary)
+{
+var sal = /^[0-9]+$/;
+if(salary.value.match(sal))
+{
+alert("salary submitted");
+return true;
+}
+else
+{
+alert('salry is not submitted');
+salary.focus();
+return false;
+}
+}
+//emp.html
+<html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>JavaScript Form Validation using a sample Employee registration form</title>
+<meta name="keywords" content="example, JavaScript Form Validation, Sample registration form" />
+<meta name="description" content="This document is an example of JavaScript Form Validation using a 
+sample registration form. " />
+<link rel='stylesheet' href='employee.css' type='text/css' />
+<script src="emp.js">
+</script>
+</head>
+<body onload="document.registration.userid.focus();"bgcolor="orange">
+<h1>Employee Registration Form</h1>
+<form name='registration' onSubmit="return formValidation();">
+<ul>
+<li><label for="first">First Name:</label></li>
+<li><input type="text" name="first" size="50" /></li>
+<li><label for="last">Last Name:</label></li>
+<li><input type="text" name="last" size="50" /></li>
+<li><label for="empid">Employee id:</label></li>
+<li><input type="text"name="empid" size="50"/></li>
+<li><label for="birth">Birth of date:</label></li>
+<li><input type="date" id="birth" name="birth"></li>
+<li><label for="address">Address:</label></li>
+<li><input type="text" name="address" size="50" /></li>
+<li><label for="country">Country:</label></li>
+<li><select name="country">
+<option selected="" value="Default">(Please select a country)</option>
+<option value="AF">Australia</option>
+<option value="AL">Canada</option>
+<option value="DZ">India</option>
+<option value="AS">Russia</option>
+<option value="AD">USA</option>
+</select></li>
+<li><label for="no">Contact no:</label></li>
+<li><input type="number" id="" name="no"></li>
+<li><label for="jdate">Date of joining:</label></li>
+<li><input type="date" id="" name="jdate"></li>
+<li><label for="email">Email:</label></li>
+<li><input type="text" name="email" size="50" /></li>
+<li><label id="gender">Gender:</label></li>
+<li><input type="radio" name="male" value="Male" /><span>Male</span></li>
+<li><input type="radio" name="female" value="Female" /><span>Female</span></li>
+<li><label for="salary">salary:</label></li>
+<li><input type="number" id="salary" name="salary"></li>
+<li><input type="submit" name="submit" value="Submit" /></li>
+</ul>
+</form>
+</body>
+</html>
+//emp.css
+h1 {
+ margin-left: 70px;
+ }
+ form li {
+ list-style: none;
+ margin-bottom: 5px;
+ }
+ 
+ form ul li label{
+ float: left;
+ clear: left;
+ width: 100px;
+ text-align: right;
+ margin-right: 10px;
+ font-family:Verdana, Arial, Helvetica, sans-serif;
+ font-size:14px;
+ }
+ 
+ form ul li input, select, span {
+ float: left;
+ margin-bottom: 10px;
+ }
+ 
+ form textarea {
+ float: left;
+ width: 350px;
+ height: 150px;
+ }
+ 
+ [type="submit"] {
+ clear: left;
+ margin: 20px 0 0 230px;
+ font-size:18px
+ }
+ 
+ p {
+ margin-left: 70px;
+ font-weight: bold;
+ }
+.............................................................................................................................................................................................................
+
+Q4.Using nodejs create a web page to read two file names from user and append contents of first file 
+into second file
+//append.js
+var fs= require('fs');
+fs.readFile('demo.txt',function(err,data)
+{
+ fs.appendFile('demo2.txt',data.toString(),function(err)
+ {
+ 
+ });
+ fs.readFile('demo2.txt',function(err,data)
+ {
+ console.log(data.toString())
+ });
+});
+
+................................................................................................................................................................................................................
+
