@@ -1,0 +1,1271 @@
+1.Write a JAVA Program to implement built-in support (java.util.Observable)
+Weather
+station with members temperature, humidity, pressure and methods
+mesurmentsChanged(), setMesurment(), getTemperature(), getHumidity(),
+getPressure()
+
+-->import java.util.Observable;
+ import java.util.Observer;
+
+interface DisplayElement {
+  public void display();
+ }
+ class WeatherData extends Observable {
+ 
+ private float temperature;
+ private float humidity;
+ private float pressure;
+ 
+ public WeatherData() {
+  
+ }
+ 
+public void measurementsChanged(){
+ setChanged();
+notifyObservers();
+}
+
+public void setMeasurements(float temperature, float humidity, float pressure) {
+  this.temperature = temperature;
+  this.humidity = humidity;
+  this.pressure = pressure;
+  measurementsChanged();
+ }
+public float getTemperature() {
+  return temperature;
+}
+ public float getHumidity() {
+  return humidity;
+ }
+ 
+ public float getPressure() {
+  return pressure;
+ } 
+
+}
+
+
+
+ class CurrentConditionsDisplay implements Observer, DisplayElement {
+Observable observable;
+ private float temperature;
+ private float humidity;
+ 
+ 
+ public CurrentConditionsDisplay(Observable observable) {
+  this.observable = observable;
+  observable.addObserver(this);
+ }
+ 
+ public void update(Observable obs, Object arg) {
+
+if (obs instanceof WeatherData) {
+   WeatherData weatherData=(WeatherData)obs;
+  this.temperature = weatherData.getTemperature();
+  this.humidity = weatherData.getHumidity();
+  display();
+ }
+}
+ 
+ public void display() {
+  System.out.println("Current conditions: " + temperature 
+   + "F degrees and " + humidity + "% humidity");
+ }
+}
+ class WeatherStation1 {
+
+ public static void main(String[] args) {
+  WeatherData weatherData = new WeatherData();
+ 
+  CurrentConditionsDisplay currentDisplay = 
+   new CurrentConditionsDisplay(weatherData);
+//  StatisticsDisplay statisticsDisplay = new StatisticsDisplay(weatherData);
+ // ForecastDisplay forecastDisplay = new ForecastDisplay(weatherData);
+
+  weatherData.setMeasurements(80, 65, 30.4f);
+  weatherData.setMeasurements(82, 70, 29.2f);
+  weatherData.setMeasurements(78, 90, 29.2f);
+ }
+}
+
+
+Output:
+javac WeatherStation1.java
+Note: WeatherStation1.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+PS C:\Users\admin\Desktop\SA\SA(Que 1)> java WeatherStation1
+Current conditions: 80.0F degrees and 65.0% humidity
+Current conditions: 82.0F degrees and 70.0% humidity
+Current conditions: 78.0F degrees and 90.0% humidity
+PS C:\Users\admin\Desktop\SA\SA(Que 1)> 
+============================================================================================================================
+
+2.Write a Java Program to implement I/O Decorator for converting uppercase
+letters to
+lower case letters.
+
+--> //create folder decorator
+
+//create a file with name LowerCaseInputStream.java
+
+package decorator;
+import java.io.*;
+
+public class LowerCaseInputStream extends FilterInputStream 
+{
+	public LowerCaseInputStream(InputStream in)
+	 {
+		super(in);
+	}
+	public int read() throws IOException 
+	{
+		int c = super.read();
+		return (c == -1 ? c : Character.toLowerCase((char)c));
+	}
+
+	public int read(byte[] b, int offset, int len) throws IOException 
+	{
+	
+		int result = super.read(b, offset, len);
+		for (int i = offset; i < offset+result; i++) 
+		{
+		b[i] = (byte)Character.toLowerCase((char)b[i]);
+		}
+		return result;
+       }
+
+}
+
+// create a file outside a package folder with name InputTest.java
+
+import java.io.*;
+import decorator.*;
+public class InputTest 
+{
+	public static void main(String[] args) throws IOException 
+	{
+	int c;
+	try {
+
+	InputStream in =new LowerCaseInputStream(
+				new BufferedInputStream(
+					new FileInputStream("test.txt")));
+
+		while((c = in.read()) >= 0) 
+		{
+			System.out.print((char)c);
+		}
+		in.close();
+	}
+	catch (IOException e) 
+	{
+		e.printStackTrace();
+	}
+     }
+}
+
+
+//create text file test with content in capital letters
+
+Output:
+javac InputTest.java
+PS C:\Users\admin\Desktop\SA\SA(Que 2)> java InputTest
+hello
+PS C:\Users\admin\Desktop\SA\SA(Que 2)> 
+
+=========================================================================================================================
+
+3.Write a Java Program to implement Factory method for Pizza Store with
+createPizza(),
+orederPizza(), prepare(), Bake(), cut(), box(). Use this to create variety of pizza’s
+like
+NyStyleCheesePizza, ChicagoStyleCheesePizza etc.
+
+-->import java.util.*;
+abstract class pizza
+{
+                 String name;
+                 String type;
+                 ArrayList<String> favo=new ArrayList<String>();
+                 void cut()
+                 {
+                                 System.out.println("we are cutting pizza");  
+                 }
+                 void prepare()
+                  {
+                                 System.out.println("we are preparing pizza "+name);  
+                                 for (String favo : favo) {
+								System.out.println(favo);
+							}
+                 }
+                 void bake()
+                 {
+                                 System.out.println("we are baking pizza");  
+                 }
+                 void box()
+                 {
+                                 System.out.println("we are boxing pizza..........");  
+                 }
+                 public String getName() {
+                 System.out.println(name);
+		return name;
+	}
+	public String toString() {
+		StringBuffer display = new StringBuffer();
+		display.append("---- " + name + " ----\n");
+		for (String favo : favo) {
+			display.append(favo + "\n");
+			System.out.println(favo);
+		}
+		return display.toString();
+		}
+}
+abstract class pizzastore
+{
+                  abstract pizza create(String name);
+                  
+                  public pizza orderpizza(String type)
+                  {
+                                    pizza piz=create(type);
+                                                        //  System.out.println(""+type);
+                                    piz.bake();
+                                    piz.prepare();
+                                    piz.box();
+                                    return piz;
+                  }
+}
+
+class nypizza extends pizzastore
+{
+                 pizza create(String item)
+                 {
+                                    if(item.equals("cheese"))
+                                         return new nycheesepizza();
+                                       //return  System.out.println("hiiii");
+                                     else  return  null;
+                 }
+} 
+class chipizza extends pizzastore
+{
+                 pizza create(String item)
+                 {
+                                    if(item.equals("cheese"))
+                                       return new chicheesepizza();
+                                   else  return  null;          
+                 }
+} 
+
+class nycheesepizza extends pizza
+{
+                  public nycheesepizza()
+                  {
+                  				name="ny cheese pizzA";
+                                    favo.add("nycheese pizza");
+                  }
+}
+class chicheesepizza extends pizza
+{
+                  public chicheesepizza()
+                  {
+                  				name="CHIKOGO cheese pizzA";
+                                    favo.add("checheese pizza");
+                  }
+}
+public class Pizzatest
+{
+                     public static void main(String[] args)
+                  {         
+                                    pizzastore nystore=new nypizza();
+                                    pizzastore chistore=new chipizza();
+                                    
+                                    pizza p=nystore.orderpizza("cheese");
+                                   //  System.out.println("fff  "+p.name);
+                                    System.out.println("First order was a " + p.getName());
+                                    
+                                    p=chistore.orderpizza("cheese");
+                                    System.out.println("First order was a " + p.getName());
+                  }
+}
+
+output:
+
+javac Pizzatest.java
+PS C:\Users\admin\Desktop\SA\SA(Que 3)> java Pizzatest
+we are baking pizza
+we are preparing pizza ny cheese pizzA
+nycheese pizza
+we are boxing pizza..........
+ny cheese pizzA
+First order was a ny cheese pizzA
+we are baking pizza
+we are preparing pizza CHIKOGO cheese pizzA
+checheese pizza
+we are boxing pizza..........
+CHIKOGO cheese pizzA
+First order was a CHIKOGO cheese pizzA
+PS C:\Users\admin\Desktop\SA\SA(Que 3)> 
+========================================================================================================================
+
+
+4.Write a Java Program to implement Singleton pattern for multithreading
+
+->
+ //create folder singleton
+
+//create a file with name Singleton.java
+
+
+package singleton;
+
+public class Singleton {
+	private static Singleton uniqueInstance;
+	private Singleton() {}
+public static synchronized Singleton getInstance() {
+		if (uniqueInstance == null) {
+			uniqueInstance = new Singleton();
+		}
+		return uniqueInstance;
+	}
+	public String getDescription() {
+		return "I'm a thread safe Singleton!"; }
+ }
+
+// create a file outside a package folder with name SingletonClient.java
+
+import singleton.*;
+import java.io.*;
+public class SingletonClient {
+	public static void main(String[] args) {
+		Singleton singleton = Singleton.getInstance();
+		System.out.println(singleton.getDescription());
+	}
+}
+
+output:
+ javac SingletonClient.java
+PS C:\Users\admin\Desktop\SA\SA(Que 4 )> java SingletonClient
+I'm a thread safe Singleton!
+PS C:\Users\admin\Desktop\SA\SA(Que 4 )> 
+
+============================================================================================================
+
+5.Write a Java Program to implement command pattern to test Remote Control.
+
+import java.util.*;
+import java.io.*;
+interface Command  
+{
+	public void execute ();
+}
+
+ class LightOnCommand implements Command
+{
+	Light light;
+	public LightOnCommand (Light light)
+	 {
+		this.light = light;
+	}
+	public void execute ( ) 
+	{
+		light.on ( );
+	}
+}
+class LightOffCommand implements Command 
+{
+	Light light;
+ 
+	public LightOffCommand(Light light) 
+	{
+		this.light = light;
+	}
+ 
+	public void execute() 
+	{
+		light.off();
+	}
+}
+
+ class Light
+{
+	private boolean on;
+	//String location="";
+       /* public Light(String location)
+	{
+		this.location=location;
+	}*/
+	public void on()
+	{
+
+		System.out.println("Light is on");
+	}
+	public void off()
+	{
+		System.out.println("Light is off");
+	}
+}
+class SimpleRemoteControl 
+{
+	Command slot;
+	public SimpleRemoteControl () 
+	{ }
+	public void setCommand(Command command)
+	 {
+		slot = command;
+	}
+	public void buttonWasPressed ()
+	 {
+		slot.execute  ();
+	}
+}
+public class RemoteControlTest 
+{
+	public static void main (String [] args)
+	 {
+		SimpleRemoteControl remote = new SimpleRemoteControl ( );
+		Light light = new Light ();
+		LightOnCommand lightOn = new LightOnCommand  (light);
+		remote.setCommand (lightOn);
+		remote.buttonWasPressed ( );
+		LightOffCommand lightOff = new LightOffCommand  (light);
+		remote.setCommand (lightOff);
+		remote.buttonWasPressed ( );
+		remote.setCommand (lightOff);
+        remote.buttonWasPressed ( );
+        remote.setCommand (lightOff);	
+        remote.buttonWasPressed ( );
+	}
+}
+
+output:
+javac RemoteControlTest.java
+java RemoteControlTest
+Light is on
+Light is off
+Light is off
+Light is off
+PS C:\Users\admin\Desktop\SA\SA(Que 5 )> 
+
+=====================================================================================================
+
+
+6.Write a Java Program to implement undo command to test Ceiling fan.
+
+interface Command
+{
+	public void execute();
+	public void undo();
+}
+class CeilingFan 
+{
+	public static final int HIGH = 3;
+	public static final int MEDIUM = 2;
+	public static final int LOW = 1;
+	public static final int OFF = 0;
+	String location;
+	int speed;
+	public CeilingFan(String location) 
+	{
+		this.location = location;
+		speed = OFF;
+	 }
+	public void high() 
+	{
+		speed = HIGH;
+		System.out.println(location + " ceiling fan is on high");
+	}
+	 public void medium() 
+	{
+		speed = MEDIUM;System.out.println(location + " ceiling fan is on medium");
+	}
+	public void low() 
+	{
+		speed = LOW;
+		System.out.println(location + " ceiling fan is on low");  
+	}
+	  public void off() 
+	{
+		speed = OFF;
+		System.out.println(location + " ceiling fan is off");  
+	}
+	public int getSpeed() 
+	{
+		return speed; 
+	}
+}
+class CeilingFanHighCommand implements Command
+ {
+	CeilingFan ceilingFan;
+	int prevSpeed;
+	public CeilingFanHighCommand(CeilingFan ceilingFan)
+	 {
+		this.ceilingFan = ceilingFan;
+	}
+	public void execute()
+	 {
+		prevSpeed = ceilingFan.getSpeed();
+		ceilingFan.high();
+	}
+	public void undo() 
+	{
+		if (prevSpeed == CeilingFan.HIGH)
+		 {
+			ceilingFan.high();
+		}
+		 else if (prevSpeed== CeilingFan.MEDIUM) 
+		{
+			ceilingFan.medium();
+		} 
+		else if (prevSpeed== CeilingFan.LOW) 
+		{
+			ceilingFan.low();
+		}
+		 else if (prevSpeed== CeilingFan.OFF) 
+		{
+			ceilingFan.off();
+		}
+	}
+}
+class MacroCommand implements Command
+{
+	Command[] commands;
+	public MacroCommand (Command[ ] commands)
+	{
+		this.commands = commands;
+	}
+	public void execute  ( ) 
+	{
+		for (int j = 0; j < commands.length; j++)
+		{
+			commands[I].execute ( );
+		}
+	}
+}
+ 
+
+public class RemoteLoader {
+ 
+	public static void main(String[] args) throws CloneNotSupportedException{
+		RemoteControlWithUndo remoteControl = new RemoteControlWithUndo();
+ 
+		CeilingFan ceilingFan = new CeilingFan("Living Room");
+   
+		CeilingFanLowCommand ceilingFanLow = 
+				new CeilingFanLowCommand(ceilingFan);
+		CeilingFanMediumCommand ceilingFanMedium = 
+				new CeilingFanMediumCommand(ceilingFan);
+		CeilingFanHighCommand ceilingFanHigh = 
+				new CeilingFanHighCommand(ceilingFan);
+		CeilingFanOffCommand ceilingFanOff = 
+				new CeilingFanOffCommand(ceilingFan);
+  
+		remoteControl.setCommand(0, ceilingFanLow, ceilingFanOff);
+		remoteControl.setCommand(1, ceilingFanMedium, ceilingFanOff);
+		remoteControl.setCommand(2, ceilingFanHigh, ceilingFanOff);
+   
+		System.out.println("4 on buttons");
+		remoteControl.onButtonWasPushed(1); //ceiling fan goes to medium
+		remoteControl.onButtonWasPushed(0); // ->low
+		remoteControl.onButtonWasPushed(2); // ->high
+		remoteControl.onButtonWasPushed(1); // ->medium
+		// undo stack has 
+		//   ceilingFanMedium at top
+		//   ceilingFanHigh  
+		//   ceilingFanLow 
+		//   ceilingFanMedium at bottom
+		
+		System.out.println("undo command");
+		remoteControl.undoButtonWasPushed(); // go back to high
+		System.out.println("redo command");
+		remoteControl.redoButtonWasPushed(); // return to medium
+		
+		// undo stack has 
+		//   ceilingFanMedium at top
+		//   ceilingFanHigh  
+		//   ceilingFanLow 
+		//   ceilingFanMedium at bottom		
+		
+		System.out.println("undo 4 commands");
+		remoteControl.undoButtonWasPushed(); // go back to high
+		remoteControl.undoButtonWasPushed(); // go back to low
+		remoteControl.undoButtonWasPushed(); // go back to medium
+		remoteControl.undoButtonWasPushed(); // go back to off
+		
+		// redo stack has 
+		//   ceilingFanMedium at top
+		//   ceilingFanLow  
+		//   ceilingFanHigh 
+		//   ceilingFanMedium at bottom
+		
+		System.out.println("redo 4 commands");
+		remoteControl.redoButtonWasPushed(); // return to medium
+		remoteControl.redoButtonWasPushed(); // return to low
+		remoteControl.redoButtonWasPushed(); // return to high
+		remoteControl.redoButtonWasPushed(); // return to medium
+	}
+}
+
+
+// Not Run..
+
+=====================================================================================
+
+
+7.Write a Java Program to implement Adapter pattern for Enumeration iterator.
+
+//create folder adapter
+
+//create a file with name EnumerationIterator.java
+
+package adapter;
+import java.util.*;
+public class EnumerationIterator implements Iterator<Object> {
+	Enumeration<?> enumeration;
+	public EnumerationIterator(Enumeration<?> enumeration) {
+		this.enumeration = enumeration;
+	}
+	public boolean hasNext() {
+		return enumeration.hasMoreElements();
+	}
+	public Object next() {
+		return enumeration.nextElement();
+	}
+	public void remove() {
+		throw new UnsupportedOperationException();
+	}
+}
+
+
+// create a file outside a package folder with name EnumerationIteratorTestDrive.java
+
+import adapter.*;
+import java.util.*;
+
+public class EnumerationIteratorTestDrive {
+	public static void main (String args[]) {
+		Vector<String> v = new Vector<String>(Arrays.asList(args));
+		Iterator<?> iterator = new EnumerationIterator(v.elements());
+		while (iterator.hasNext()) {
+			System.out.println(iterator.next());
+		}
+	}
+}
+
+//No Output Not Run..
+
+
+=========================================================================================================
+
+8.Write a Java Program to implement Iterator Pattern for Designing Menu like
+Breakfast,Lunch or Dinner Menu.
+
+import java.util.*;
+ interface Menu 
+ {
+	public Iterator<?> createIterator();
+		String name;
+	public String getName() {
+		return name;
+	}
+}
+ interface Iterator
+{
+	boolean hasNext();
+	Object next();
+}
+class DinerMenuIterator implements Iterator
+{
+	MenuItem[] items;
+	int position =0;
+	public DinerMenuIterator(MenuItem[] items)
+	{
+		this.items=items;
+	}
+	public Object next()
+	{
+		MenuItem menuItem=items[position];
+		position =position +1;
+		return menuItem;
+
+	}
+	public boolean hasNext()
+	{
+		if(position >=items.length || items[position]==null)
+		return false;
+		else
+		return true;
+
+	}
+
+}
+
+class MenuItem
+{
+	String name;
+	String description;
+	boolean vegetarian;
+	double price;
+	public MenuItem(String name, String description, boolean vegetarian,double price)
+	{
+		this.name	=name;
+		this.description=description;
+		this.vegetarian=vegetarian;
+		this.price=price;
+
+	}
+	public String getName()
+	{
+		return name;
+	}
+	public String getDescription()
+	{
+		return description;
+	}
+	public double getPrice()
+	{
+		return price;
+	}
+	public boolean isVegetarian()
+	{
+		return vegetarian;
+	}
+}
+class PancakeHouseMenu
+{
+	ArrayList menuItems;
+	public PancakeHouseMenu()
+	{
+		menuItems=new ArrayList();
+		addItem("K&B Pancake Breakfast","Pancake with scrambled eggs, ",true, 2.99);
+		addItem("Regular Pancake Breakfast","Pancake with fried eggs ",false, 2.99);
+		addItem("Blueberry Pancake Breakfast","Pancake with fresh blueberries", true, 3.49);
+		addItem("Waffles","Walffles with blueberries or strawberries", true,3.59);
+
+
+	}
+	public void addItem (String name, String description, boolean vegetarian ,double price)
+	{
+		MenuItem menuItem =new MenuItem(name, description,vegetarian ,price);
+		menuItems.add(menuItem);
+	}
+	public ArrayList getMenuItems()
+	{
+		return menuItems;
+	}
+}
+
+class DinerMenu
+{
+	static final int MAX_ITEMS=6;
+	int numnberOfItems =0;
+	MenuItem[] menuItems;
+	public Iterator createIterator()
+	{
+		return new DinerMenuIterator(menuItems);
+	}
+}
+class Waitress
+{
+	PancakeHouseMenu pancakeHouseMenu;
+	DinerMenu dinerMenu;
+	public Waitress(PancakeHouseMenu pancakeHouseMenu, DinerMenu dinerMenu)
+	{
+		this.pancakeHouseMenu =pancakeHouseMenu;
+		this.dinerMenu=dinerMenu;
+
+	}
+	
+	public void printMenu()
+	{
+		Iterator pancakeIterator =pancakeHouseMenu.createIterator();
+		Iterator dinerMenuIterator= dinerMenu.createIterator();
+		System.out.println("Menu \n **\n Breakfast");
+		printMenu(pancakeIterator);
+		System.out.println("\n Lunch");
+		printMenu(dinerMenuIterator);
+	}
+	private void printMenu(Iterator iterator)
+	{
+		while(iterator.hasNext())
+		{
+			MenuItem menuItem=(MenuItem)iterator.next();
+			System.out.println(menuItem.getName()+",");
+			System.out.println(menuItem.getPrice() + "==");
+			System.out.println(menuItem.getDescription());
+
+		}
+	}
+}
+
+public class MenuTestDrive
+{
+	public static void main(String args[])
+	{
+		PancakeHouseMenu pancakeHouseMenu= new PancakeHouseMenu();
+		DinerMenu dinerMenu=new DinerMenu();
+		Waitress waitress= new Waitress(pancakeHouseMenu,dinerMenu);
+		waitress.printMenu();
+	}	
+	
+}
+
+//Not run
+
+===========================================================================
+
+9.Write a Java Program to implement State Pattern for Gumball Machine.
+Create instance variable that holds current state from there, we just need to
+handle all actions,
+behaviors and state transition that can happen. For actions we need to
+implement
+methods to insert a quarter, remove a quarter, turning the crank and display
+gumball.
+
+interface State {
+ 
+	public void insertQuarter();
+	public void ejectQuarter();
+	public void turnCrank();
+	public void dispense();
+		
+}
+class NoQuarterState implements State {
+    GumballMachine gumballMachine;
+ 
+    public NoQuarterState(GumballMachine gumballMachine) {
+        this.gumballMachine = gumballMachine;
+    }
+ 
+	public void insertQuarter() {
+		System.out.println("You inserted a quarter");
+		gumballMachine.setState(gumballMachine.getHasQuarterState());
+	}
+ 
+	public void ejectQuarter() {
+		System.out.println("You haven't inserted a quarter");
+	}
+ 
+	public void turnCrank() {
+		System.out.println("You turned, but there's no quarter");
+	 }
+ 
+	public void dispense() {
+		System.out.println("You need to pay first");
+	} 
+	
+	
+ 
+	public String toString() {
+		return "waiting for quarter";
+	}
+}
+class GumballMachine {
+ 
+	State soldOutState;
+	State noQuarterState;
+	State hasQuarterState;
+	State soldState;
+ 
+	State state;
+	int count = 0;
+ 
+	public GumballMachine(int numberGumballs) {
+		soldOutState = new SoldOutState(this);
+		noQuarterState = new NoQuarterState(this);
+		hasQuarterState = new HasQuarterState(this);
+		soldState = new SoldState(this);
+
+		this.count = numberGumballs;
+ 		if (numberGumballs > 0) {
+			state = noQuarterState;
+		} else {
+			state = soldOutState;
+		}
+	}
+ 
+	public void insertQuarter() {
+		state.insertQuarter();
+	}
+ 
+	public void ejectQuarter() {
+		state.ejectQuarter();
+	}
+ 
+	public void turnCrank() {
+		state.turnCrank();
+		state.dispense();
+	}
+ 
+	void releaseBall() {
+		System.out.println("A gumball comes rolling out the slot...");
+		if (count != 0) {
+			count = count - 1;
+		}
+	}
+ 
+	int getCount() {
+		return count;
+	}
+ 
+	
+
+	void setState(State state) {
+		this.state = state;
+	}
+    public State getState() {
+        return state;
+    }
+
+    public State getSoldOutState() {
+        return soldOutState;
+    }
+
+    public State getNoQuarterState() {
+        return noQuarterState;
+    }
+
+    public State getHasQuarterState() {
+        return hasQuarterState;
+    }
+
+    public State getSoldState() {
+        return soldState;
+    }
+ 
+	public String toString() {
+		StringBuffer result = new StringBuffer();
+		result.append("\nMighty Gumball, Inc.");
+		result.append("\nJava-enabled Standing Gumball Model #2004");
+		result.append("\nInventory: " + count + " gumball");
+		if (count != 1) {
+			result.append("s");
+		}
+		result.append("\n");
+		result.append("Machine is " + state + "\n");
+		return result.toString();
+	}
+}
+ class HasQuarterState implements State {
+	GumballMachine gumballMachine;
+ 
+	public HasQuarterState(GumballMachine gumballMachine) {
+		this.gumballMachine = gumballMachine;
+	}
+  
+	public void insertQuarter() {
+		System.out.println("You can't insert another quarter");
+	}
+ 
+	public void ejectQuarter() {
+		System.out.println("Quarter returned");
+		gumballMachine.setState(gumballMachine.getNoQuarterState());
+	}
+ 
+	public void turnCrank() {
+		System.out.println("You turned...");
+		gumballMachine.setState(gumballMachine.getSoldState());
+	}
+
+    public void dispense() {
+        System.out.println("No gumball dispensed");
+    }
+    
+   
+	public String toString() {
+		return "waiting for turn of crank";
+	}
+}
+ class SoldState implements State {
+ 
+    GumballMachine gumballMachine;
+ 
+    public SoldState(GumballMachine gumballMachine) {
+        this.gumballMachine = gumballMachine;
+    }
+       
+	public void insertQuarter() {
+		System.out.println("Please wait, we're already giving you a gumball");
+	}
+ 
+	public void ejectQuarter() {
+		System.out.println("Sorry, you already turned the crank");
+	}
+ 
+	public void turnCrank() {
+		System.out.println("Turning twice doesn't get you another gumball!");
+	}
+ 
+	public void dispense() {
+		gumballMachine.releaseBall();
+		if (gumballMachine.getCount() > 0) {
+			gumballMachine.setState(gumballMachine.getNoQuarterState());
+		} else {
+			System.out.println("Oops, out of gumballs!");
+			gumballMachine.setState(gumballMachine.getSoldOutState());
+		}
+	}
+	
+	
+ 
+	public String toString() {
+		return "dispensing a gumball";
+	}
+}
+ class SoldOutState implements State {
+    GumballMachine gumballMachine;
+ 
+    public SoldOutState(GumballMachine gumballMachine) {
+        this.gumballMachine = gumballMachine;
+    }
+ 
+	public void insertQuarter() {
+		System.out.println("You can't insert a quarter, the machine is sold out");
+	}
+ 
+	public void ejectQuarter() {
+		System.out.println("You can't eject, you haven't inserted a quarter yet");
+	}
+ 
+	public void turnCrank() {
+		System.out.println("You turned, but there are no gumballs");
+	}
+ 
+	public void dispense() {
+		System.out.println("No gumball dispensed");
+	}
+	
+
+ 
+	public String toString() {
+		return "sold out";
+	}
+}
+public class GumballMachineTestDrive {
+
+	public static void main(String[] args) {
+		GumballMachine gumballMachine = new GumballMachine(2);
+
+		System.out.println(gumballMachine);
+
+		gumballMachine.insertQuarter();
+		gumballMachine.turnCrank();
+
+		System.out.println(gumballMachine);
+
+		gumballMachine.insertQuarter();
+		gumballMachine.turnCrank();
+		gumballMachine.insertQuarter();
+		gumballMachine.turnCrank();
+		
+	
+		gumballMachine.insertQuarter();
+		gumballMachine.turnCrank();
+
+		System.out.println(gumballMachine);
+	}
+}
+
+//Not run
+
+
+==========================================================================================================
+
+10.Write a java program to implement Adapter pattern to design Heart Model to
+Beat
+Model.
+
+
+package combined;
+ 
+public class HeartTestDrive {
+ public static void main (String[] args) {
+HeartModel heartModel = new HeartModel();
+ ControllerInterface model = new HeartController(heartModel);
+ }
+}
+package combined;
+public interface HeartModelInterface {
+int getHeartRate();
+void registerObserver(BeatObserver o);
+void removeObserver(BeatObserver o);
+void registerObserver(BPMObserver o);
+void removeObserver(BPMObserver o);
+}
+package combined;
+import java.util.*;
+public class HeartModel implements HeartModelInterface, Runnable {
+ArrayList beatObservers = new ArrayList();
+ArrayList bpmObservers = new ArrayList();
+int time = 1000;
+ int bpm = 90;
+Random random = new Random(System.currentTimeMillis());
+Thread thread;
+public HeartModel() {
+thread = new Thread(this);
+thread.start();
+}
+public void run() {
+int lastrate = -1;
+for(;;) {
+int change = random.nextInt(10);
+if (random.nextInt(2) == 0) {
+change = 0 - change;
+}
+int rate = 60000/(time + change);
+if (rate < 120 && rate > 50) {
+time += change;
+notifyBeatObservers();
+if (rate != lastrate) {
+lastrate = rate;
+notifyBPMObservers();
+}
+}
+try {
+Thread.sleep(time);
+} catch (Exception e) {}
+}
+}
+public int getHeartRate() {
+return 60000/time;
+}
+public void registerObserver(BeatObserver o) {
+beatObservers.add(o);
+}
+public void removeObserver(BeatObserver o) {
+int i = beatObservers.indexOf(o);
+if (i >= 0) {
+beatObservers.remove(i);
+}
+}
+public void notifyBeatObservers() {
+for(int i = 0; i < beatObservers.size(); i++) {
+BeatObserver observer = (BeatObserver)beatObservers.get(i);
+observer.updateBeat();
+}
+}
+public void registerObserver(BPMObserver o) {
+bpmObservers.add(o);
+}
+public void removeObserver(BPMObserver o) {
+int i = bpmObservers.indexOf(o);
+if (i >= 0) {
+bpmObservers.remove(i);
+}
+}
+public void notifyBPMObservers() {
+for(int i = 0; i < bpmObservers.size(); i++) {
+BPMObserver observer = (BPMObserver)bpmObservers.get(i);
+observer.updateBPM();
+}
+}
+}
+package combined;
+ 
+public class HeartController implements ControllerInterface {
+HeartModelInterface model;
+DJView view;
+ 
+public HeartController(HeartModelInterface model) {
+this.model = model;
+view = new DJView(this, new HeartAdapter(model));
+ view.createView();
+ view.createControls();
+view.disableStopMenuItem();
+view.disableStartMenuItem();
+}
+ 
+public void start() {}
+public void stop() {}
+ 
+public void increaseBPM() {}
+ 
+public void decreaseBPM() {}
+ 
+public void setBPM(int bpm) {}
+}
+package combined;
+public class HeartAdapter implements BeatModelInterface {
+HeartModelInterface heart;
+public HeartAdapter(HeartModelInterface heart) {
+this.heart = heart;
+}
+ public void initialize() {}
+ 
+ public void on() {}
+ 
+ public void off() {}
+ 
+public int getBPM() {
+return heart.getHeartRate();
+}
+ 
+ public void setBPM(int bpm) {}
+ 
+public void registerObserver(BeatObserver o) {
+heart.registerObserver(o);
+}
+ 
+public void removeObserver(BeatObserver o) {
+heart.removeObserver(o);
+}
+ 
+public void registerObserver(BPMObserver o) {
+heart.registerObserver(o);
+}
+ 
+public void removeObserver(BPMObserver o) {
+heart.removeObserver(o);
+}
+}
+
+
+//  Not Run
+
+
+====================================================================
+
+11.Design simple HR Application using Spring Framework
+
+package springDemo;
+import org.springframework.beans.factory.BeanFactory; 
+import org.springframework.beans.factory.xml.XmlBeanFactory; 
+import org.springframework.core.io.ClassPathResource; 
+import org.springframework.core.io.Resource; 
+ 
+public class Testt { 
+public static void main(String[] args) { 
+ Resource resource=new ClassPathResource("Context.xml"); 
+ BeanFactory factory=new XmlBeanFactory(resource); 
+ 
+ Student student=(Student)factory.getBean("studentbean"); 
+ student.displayInfo(); 
+} 
+} 
+package springDemo;
+public class Student { 
+private String name; 
+public String getName() { 
+ return name; 
+} 
+public void setName(String name) { 
+ this.name = name; 
+} 
+public void displayInfo(){ 
+ System.out.println("Hello: "+name); 
+} 
+} 
+<?xml version="1.0" encoding="UTF-8"?> 
+<beans 
+ xmlns="http://www.springframework.org/schema/beans" 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xmlns:p="http://www.springframework.org/schema/p" 
+ xsi:schemaLocation="http://www.springframework.org/schema/beans 
+ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
+ 
+<bean id="studentbean" class="springDemo.Student"> 
+<property name="name" value="Name"></property> 
+</bean> 
+ </beans>
+
+// Dont Know How to run...
+
+
